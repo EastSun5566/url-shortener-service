@@ -1,16 +1,12 @@
 {
   "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/main.js",
+  "private": true,
+  "version": "0.0.0",
   "scripts": {
     "dev": "nodemon -e ts -x ts-node src/main.ts",
     "start": "pnpm run build && node dist",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "汪東陽",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.11",
     "fastify-tsconfig": "^1.0.1",

@@ -1,14 +1,12 @@
 {
   "name": "url-shortener-service",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "lint": "eslint --fix --ignore-path .gitignore ."
   },
-  "keywords": [],
   "author": "汪東陽",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "eslint": "^8.0.1",

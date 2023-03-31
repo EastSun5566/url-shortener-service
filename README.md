@@ -14,10 +14,10 @@
 
 ## 專案需符合以下==至少兩項==需求
 
-- [ ] 使用 [TypeScript](https://www.typescriptlang.org/) 4.3 以上實作
+- [x] 使用 [TypeScript](https://www.typescriptlang.org/) 4.3 以上實作
 - [ ] 後端使用任一套 [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) 搭配任一套 [RDBMS](https://en.wikipedia.org/wiki/Relational_database)
 - [ ] 整個 React App 使用 [Functional Component](https://reactjs.org/docs/components-and-props.html#function-and-class-components)
-- [ ] 使用套件檢查程式碼風格 (例如：[JavaScript Standard](https://standardjs.com/)、[ESLint](https://eslint.org/))
+- [x] 使用套件檢查程式碼風格 (例如：[JavaScript Standard](https://standardjs.com/)、[ESLint](https://eslint.org/))
 - [ ] 專案需要能被公開瀏覽使用 (例如使用 [Heroku](https://www.heroku.com/))
 - [ ] [單元測試](https://en.wikipedia.org/wiki/Unit_testing)
 - [ ] [E2E 測試](https://www.browserstack.com/guide/end-to-end-testing)
