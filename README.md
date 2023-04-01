@@ -7,8 +7,8 @@
 - [x] 專案需要使用 [Git](https://git-scm.com/) 管理專案，並公開至 [GitHub](https://github.com/)
 - [x] Git commit 訊息需符合 [Conventional Commits](https://www.conventionalcommits.org/zh-hant/v1.0.0/)，並使用英文撰寫
 - [x] 專案須包含 [`README.md`](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-readmes)，其中描述專案的安裝、建置、使用，包含的功能與操作方式
-- [ ] 前端使用 [React.js](https://zh-hant.reactjs.org/) 16 以上實作整個頁面與元件
-- [ ] 後端使用 [Node.js](https://nodejs.org/en/) 14 以上
+- [x] 前端使用 [React.js](https://zh-hant.reactjs.org/) 16 以上實作整個頁面與元件
+- [x] 後端使用 [Node.js](https://nodejs.org/en/) 14 以上
 - [ ] 使用者可以填入一段網址，會產生一段短網址
 - [ ] 使用者可以瀏覽短網址，服務會將短網址重新導向到原始網址
 
