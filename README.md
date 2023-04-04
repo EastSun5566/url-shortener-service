@@ -70,5 +70,5 @@
 
 ```mermaid
 erDiagram
-    User ||--o{ Link : has many
+    User ||--o{ Link : "has many"
 ```
