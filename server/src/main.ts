@@ -1,4 +1,7 @@
 import createApp from 'fastify'
+import {
+  linkRoute
+} from './routes/'
 
 export async function main (): Promise<void> {
   const app = createApp({
@@ -8,6 +11,9 @@ export async function main (): Promise<void> {
       }
     }
   })
+
+  app.get('/', () => 'Welcome to the URL Shortener API')
+  void app.register(linkRoute)
 
   try {
     await app.listen({
