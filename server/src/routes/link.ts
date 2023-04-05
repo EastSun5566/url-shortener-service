@@ -1,12 +1,12 @@
 import type { FastifyPluginAsync } from 'fastify'
 import {
-  redirect,
-  createLink
+  handleRedirect,
+  handleCreateLink
 } from '../controllers'
 
 export const linkRoute: FastifyPluginAsync = async (app): Promise<void> => {
-  app.get('/:shortenKey', redirect)
-  app.post('/links', createLink)
+  app.get('/:shortenKey', handleRedirect)
+  app.post('/links', handleCreateLink)
 }
 
 export default linkRoute
