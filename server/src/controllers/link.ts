@@ -1,27 +1,24 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { createShortenKey, getDbClient, getLinkCache, setLinkCache } from '../services'
+import { createLink, createShortenKey, findLinkByShortenKey, getLinkFromCache, setLinkFromCache } from '../services'
 export async function handleRedirect (request: FastifyRequest<{ Params: { shortenKey: string } }>, reply: FastifyReply) {
   const { shortenKey } = request.params
 
   // 1. get from cache
-  const originalUrl = await getLinkCache(shortenKey)
-  if (originalUrl != null) {
+  const originalUrl = await getLinkFromCache(shortenKey)
+  if (originalUrl) {
     reply.redirect(originalUrl)
     return
   }
 
   // 2. get from database
-  const db = await getDbClient()
-  const link = await db.link.findUnique({
-    where: { shorten_key: shortenKey }
-  })
-  if (link === null) {
+  const link = await findLinkByShortenKey(shortenKey)
+  if (!link) {
     reply.notFound('Link not found')
     return
   }
 
   // 3. add to cache
-  await setLinkCache(shortenKey, link.original_url)
+  await setLinkFromCache(shortenKey, link.original_url)
 
   reply.redirect(link.original_url)
 }
@@ -30,7 +27,7 @@ export async function handleCreateLink (request: FastifyRequest<{ Body: { origin
   const { originalUrl } = request.body
 
   // 1. validate originalUrl
-  if (originalUrl === '') {
+  if (!originalUrl) {
     reply.badRequest('originalUrl is required')
     return
   }
@@ -39,16 +36,10 @@ export async function handleCreateLink (request: FastifyRequest<{ Body: { origin
   const shortenKey = await createShortenKey()
 
   // 3. insert into database
-  const db = await getDbClient()
-  await db.link.create({
-    data: {
-      original_url: originalUrl,
-      shorten_key: shortenKey
-    }
-  })
+  await createLink(originalUrl, shortenKey)
 
   // 4. add to cache
-  await setLinkCache(shortenKey, originalUrl)
+  await setLinkFromCache(shortenKey, originalUrl)
 
   reply.status(201).send({ shortenUrl: `${request.hostname}/${shortenKey}` })
 }
