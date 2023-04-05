@@ -1,14 +1,19 @@
-// import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { redirect } from 'react-router-dom'
 
-import { register, login } from '../services'
+export interface AuthFormProps {
+  title: string
+  onSubmit: (values: { email: string, password: string }) => Promise<void>
+  error?: string
+}
 
-export function AuthRoute (): JSX.Element {
+export function AuthForm ({
+  title,
+  onSubmit,
+  error
+}: AuthFormProps): JSX.Element {
   const {
     register: registerInput,
-    handleSubmit: createSubmitHandler,
-    formState
+    handleSubmit: createSubmitHandler
   } = useForm({
     defaultValues: {
       email: '',
@@ -17,14 +22,12 @@ export function AuthRoute (): JSX.Element {
   })
 
   const handleSubmit = createSubmitHandler(async (values) => {
-    const { data } = await register(values)
-    localStorage.setItem('token', data.token)
-    redirect('/')
+    onSubmit(values)
   })
 
   return (
     <main className="text-center">
-      <h1 className="mb-10">Login / Register</h1>
+      <h1 className="mb-10">{title}</h1>
 
       <form className="mb-10" onSubmit={handleSubmit}>
         <input
@@ -39,15 +42,12 @@ export function AuthRoute (): JSX.Element {
           {...registerInput('password', { required: true })}
         />
 
-        <button
-          type="submit"
-          disabled={formState.isSubmitting}
-          >
-            Login
-        </button>
+        <button type="submit">{title}</button>
       </form>
+
+      {error && <p className="text-red-500">{error}</p>}
     </main>
   )
 }
 
-export default AuthRoute
+export default AuthForm

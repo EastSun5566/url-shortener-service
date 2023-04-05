@@ -9,7 +9,8 @@ import './index.css'
 
 import {
   RootRoute,
-  AuthRoute
+  LoginRoute,
+  RegisterRoute
 } from './routes'
 const router = createBrowserRouter([
   {
@@ -17,8 +18,12 @@ const router = createBrowserRouter([
     element: <RootRoute />
   },
   {
-    path: '/auth',
-    element: <AuthRoute />
+    path: '/login',
+    element: <LoginRoute />
+  },
+  {
+    path: '/register',
+    element: <RegisterRoute />
   }
 ])
 

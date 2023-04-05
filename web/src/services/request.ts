@@ -1,4 +1,10 @@
-import axios, { type AxiosInstance } from 'axios'
+import axios, { type AxiosInstance, type AxiosError } from 'axios'
+
+export type ResponseError = AxiosError<{
+  error: string
+  message: string
+  statusCode: number
+}>
 
 let request: AxiosInstance | null = null
 export function getRequest () {
