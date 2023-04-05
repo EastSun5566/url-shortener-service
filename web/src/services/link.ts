@@ -1,7 +1,9 @@
 import { getRequest } from './request'
 
-export async function createLink (originalUrl: string) {
-  return await getRequest().post<{ shortenUrl: string }>('/links', {
-    originalUrl
-  })
+interface CreateLinkData {
+  originalUrl: string
+}
+
+export async function createLink (data: CreateLinkData) {
+  return await getRequest().post<{ shortenUrl: string }>('/links', data)
 }

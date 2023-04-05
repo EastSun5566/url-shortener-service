@@ -1,44 +1,55 @@
-import { type FormEvent, useState } from 'react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+
 import { createLink } from '../services'
 
-export function Root (): JSX.Element {
-  const [originalUrl, setOriginalUrl] = useState('')
+export function RootRoute (): JSX.Element {
+  const {
+    register,
+    handleSubmit: createSubmitHandler,
+    formState
+  } = useForm({
+    defaultValues: {
+      originalUrl: ''
+    }
+  })
   const [shortenUrl, setShortenUrl] = useState('')
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault()
-
-    const { data } = await createLink(originalUrl)
+  const handleSubmit = createSubmitHandler(async (values) => {
+    const { data } = await createLink(values)
     setShortenUrl(data.shortenUrl)
-  }
+  })
 
   return (
-    <main>
-      <h1 className='mb-10'>URL Shortener</h1>
+    <>
+    <nav className="fixed top-0 left-0 w-full p-4">Nav</nav>
 
-      <form className='text-center mb-10' onSubmit={handleSubmit}>
+    <main className="text-center">
+      <h1 className="mb-10">URL Shortener</h1>
+
+      <form className="mb-10" onSubmit={handleSubmit}>
         <input
-          className="w-full outline-none rounded-xl h-12 px-3 focus:ring-2 ring-indigo-400 ring-offset-2"
           type="url"
           placeholder="Type URL here..."
-          value={originalUrl}
-          onChange={({ target }) => { setOriginalUrl(target.value) }}
+          {...register('originalUrl', { required: true })}
         />
 
         <button
-          className="px-5 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 text-white focus:ring-2 ring-indigo-400 ring-offset-2 disabled:opacity-50"
-          type="submit">
+          type="submit"
+          disabled={formState.isSubmitting}
+          >
             Shorten
         </button>
       </form>
 
       {shortenUrl && (
-        <div className='text-center'>
+        <div>
           <a href={shortenUrl} target='_blank' rel="noreferrer">{shortenUrl}</a>
         </div>
       )}
     </main>
+    </>
   )
 }
 
-export default Root
+export default RootRoute

@@ -7,11 +7,18 @@ import {
 
 import './index.css'
 
-import { Root } from './routes'
+import {
+  RootRoute,
+  AuthRoute
+} from './routes'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />
+    element: <RootRoute />
+  },
+  {
+    path: '/auth',
+    element: <AuthRoute />
   }
 ])
 
