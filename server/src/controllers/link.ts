@@ -4,6 +4,7 @@ import {
   createLink,
   createShortenKey,
   findLinkByShortenKey,
+  findLinksByUserId,
   getLinkFromCache,
   setLinkFromCache,
   verifyToken
@@ -32,6 +33,28 @@ export async function handleRedirect (
   await setLinkFromCache(shortenKey, link.original_url)
 
   reply.redirect(link.original_url)
+}
+
+export async function handleListLinks (
+  request: FastifyRequest<{
+    Headers: { authorization?: string }
+  }>,
+  reply: FastifyReply
+) {
+  // 1. check authorization
+  const token = request.headers.authorization?.split(' ')[1]
+  if (!token) {
+    reply.unauthorized('Unauthorized')
+    return
+  }
+
+  // 2. get links from database
+  const links = await findLinksByUserId(verifyToken(token).id)
+
+  reply.send(links.map((link) => ({
+    ...link,
+    shortenUrl: `http://${request.hostname}/${link.shorten_key}`
+  })))
 }
 
 export async function handleCreateLink (

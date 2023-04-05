@@ -35,6 +35,14 @@ export async function findLinkByShortenKey (shortenKey: string) {
   })
 }
 
+export async function findLinksByUserId (userId: number) {
+  const db = await getDbClient()
+
+  return await db.link.findMany({
+    where: { userId }
+  })
+}
+
 export async function createLink ({
   originalUrl,
   shortenKey,
