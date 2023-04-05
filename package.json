@@ -1,6 +1,6 @@
 {
   "name": "url-shortener-service",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A good URL shortener service",
   "scripts": {
     "lint": "eslint --fix --ignore-path .gitignore .",
