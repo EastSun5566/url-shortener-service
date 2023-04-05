@@ -2,12 +2,17 @@ import createApp from 'fastify'
 import cors from '@fastify/cors'
 import sensible from '@fastify/sensible'
 
+import { config as loadEnv } from 'dotenv'
+
 import {
   linkRoute,
   userRoute
-} from './routes/'
+} from './routes'
+import { config } from './config'
 
 export async function main (): Promise<void> {
+  loadEnv()
+
   const app = createApp({
     logger: {
       transport: {
@@ -25,8 +30,8 @@ export async function main (): Promise<void> {
 
   try {
     await app.listen({
-      host: process.env.HOST ?? 'localhost',
-      port: +(process.env.PORT ?? 8080)
+      host: config.server.host,
+      port: config.server.port
     })
   } catch (error: unknown) {
     app.log.error(error)

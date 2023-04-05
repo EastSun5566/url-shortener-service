@@ -6,6 +6,7 @@ import {
   findUserByEmail,
   signToken
 } from '../services'
+import { isValidEmail } from '../utils'
 
 export async function handleRegister (
   request: FastifyRequest<{ Body: { email: string, password: string } }>,
@@ -14,8 +15,8 @@ export async function handleRegister (
   const { email, password } = request.body
 
   // 1. validate email and password
-  if (!email || !password) {
-    reply.badRequest('Email and password are required')
+  if (!email || !isValidEmail(email) || !password) {
+    reply.badRequest('Email or password is invalid')
     return
   }
 
@@ -46,8 +47,8 @@ export async function handleLogin (
   const { email, password } = request.body
 
   // 1. validate email and password
-  if (!email || !password) {
-    reply.badRequest('Email and password are required')
+  if (!email || !isValidEmail(email) || !password) {
+    reply.badRequest('Email or password is invalid')
     return
   }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { createLink, getLink } from '../services'
+import { createLink, getLink, type ResponseError } from '../services'
 
 export function RootRoute (): JSX.Element {
   const [isLogin, setIsLogin] = useState(() => !!localStorage.getItem('token'))
@@ -16,9 +16,15 @@ export function RootRoute (): JSX.Element {
     }
   })
   const [shortenUrls, setShortenUrls] = useState<string[]>([])
+  const [error, setError] = useState('')
   const fetchLinks = async () => {
-    const { data } = await getLink()
-    setShortenUrls(data.map(({ shortenUrl }) => shortenUrl))
+    try {
+      const { data } = await getLink()
+      setShortenUrls(data.map(({ shortenUrl }) => shortenUrl))
+    } catch (error) {
+      const { response } = error as ResponseError
+      setError(response?.data.message ?? 'Something went wrong. Please try again later.')
+    }
   }
   useEffect(() => {
     if (isLogin) fetchLinks()
@@ -73,6 +79,8 @@ export function RootRoute (): JSX.Element {
             Shorten
         </button>
       </form>
+
+      {error && <p className="text-red-500">{error}</p>}
 
       <ul className="max-h-40 overflow-y-scroll">
         {shortenUrls.map((shortenUrl) => (

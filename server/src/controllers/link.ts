@@ -9,6 +9,7 @@ import {
   setLinkFromCache,
   verifyToken
 } from '../services'
+import { isValidUrl } from '../utils'
 export async function handleRedirect (
   request: FastifyRequest<{ Params: { shortenKey: string } }>,
   reply: FastifyReply
@@ -66,8 +67,8 @@ export async function handleCreateLink (
   const { originalUrl } = request.body
 
   // 1. validate originalUrl
-  if (!originalUrl) {
-    reply.badRequest('originalUrl is required')
+  if (!originalUrl || !isValidUrl(originalUrl)) {
+    reply.badRequest('Invalid URL')
     return
   }
 

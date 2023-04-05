@@ -11,3 +11,17 @@ export function toBase62 (number: number) {
 
   return result
 }
+
+export function isValidUrl (url: string) {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(url)
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
+export function isValidEmail (email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
