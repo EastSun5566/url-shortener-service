@@ -21,7 +21,7 @@ export function LoginRoute (): JSX.Element {
 
   return (
     <AuthForm
-      title="Register"
+      title="Login"
       onSubmit={handleSubmit}
       error={error}
     />
