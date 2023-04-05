@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "nodemon -e ts -x ts-node src/main.ts",
+    "migrate": "npx prisma migrate dev",
     "start": "pnpm run build && node dist",
     "build": "tsc"
   },

@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "lint": "eslint --fix --ignore-path .gitignore ."
+    "lint": "eslint --fix --ignore-path .gitignore .",
+    "server:dev": "pnpm --filter server dev",
+    "server:migrate": "pnpm --filter server migrate",
+    "web:dev": "pnpm --filter web dev"
   },
   "author": "汪東陽",
   "license": "MIT",
