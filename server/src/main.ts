@@ -1,4 +1,6 @@
 import createApp from 'fastify'
+import sensible from '@fastify/sensible'
+
 import {
   linkRoute
 } from './routes/'
@@ -11,6 +13,8 @@ export async function main (): Promise<void> {
       }
     }
   })
+
+  app.register(sensible)
 
   app.get('/', () => 'Welcome to the URL Shortener API')
   app.register(linkRoute)

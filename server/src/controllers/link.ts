@@ -16,7 +16,7 @@ export async function handleRedirect (request: FastifyRequest<{ Params: { shorte
     where: { shorten_key: shortenKey }
   })
   if (link === null) {
-    reply.status(404).send({ error: 'Link not found' })
+    reply.notFound('Link not found')
     return
   }
 
@@ -31,7 +31,7 @@ export async function handleCreateLink (request: FastifyRequest<{ Body: { origin
 
   // 1. validate originalUrl
   if (originalUrl === '') {
-    reply.status(400).send({ error: 'originalUrl is required' })
+    reply.badRequest('originalUrl is required')
     return
   }
 
@@ -50,5 +50,5 @@ export async function handleCreateLink (request: FastifyRequest<{ Body: { origin
   // 4. add to cache
   await setLinkCache(shortenKey, originalUrl)
 
-  reply.status(201).send({ shortenUrl: `http://localhost:8080/${shortenKey}` })
+  reply.status(201).send({ shortenUrl: `${request.hostname}/${shortenKey}` })
 }
