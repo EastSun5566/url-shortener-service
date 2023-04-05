@@ -1,6 +1,17 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { createLink, createShortenKey, findLinkByShortenKey, getLinkFromCache, setLinkFromCache } from '../services'
-export async function handleRedirect (request: FastifyRequest<{ Params: { shortenKey: string } }>, reply: FastifyReply) {
+
+import {
+  createLink,
+  createShortenKey,
+  findLinkByShortenKey,
+  getLinkFromCache,
+  setLinkFromCache,
+  verifyToken
+} from '../services'
+export async function handleRedirect (
+  request: FastifyRequest<{ Params: { shortenKey: string } }>,
+  reply: FastifyReply
+) {
   const { shortenKey } = request.params
 
   // 1. get from cache
@@ -23,7 +34,13 @@ export async function handleRedirect (request: FastifyRequest<{ Params: { shorte
   reply.redirect(link.original_url)
 }
 
-export async function handleCreateLink (request: FastifyRequest<{ Body: { originalUrl: string } }>, reply: FastifyReply) {
+export async function handleCreateLink (
+  request: FastifyRequest<{
+    Headers: { authorization?: string }
+    Body: { originalUrl: string }
+  }>,
+  reply: FastifyReply
+) {
   const { originalUrl } = request.body
 
   // 1. validate originalUrl
@@ -36,7 +53,14 @@ export async function handleCreateLink (request: FastifyRequest<{ Body: { origin
   const shortenKey = await createShortenKey()
 
   // 3. insert into database
-  await createLink(originalUrl, shortenKey)
+  const token = request.headers.authorization?.split(' ')[1]
+  await createLink({
+    originalUrl,
+    shortenKey,
+    ...(token && {
+      userId: verifyToken(token).id
+    })
+  })
 
   // 4. add to cache
   await setLinkFromCache(shortenKey, originalUrl)

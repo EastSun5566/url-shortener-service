@@ -1,8 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { hash, compare } from 'bcrypt'
-import { sign } from 'jsonwebtoken'
 
-import { createUser, findUserByEmail } from '../services'
+import {
+  createUser,
+  findUserByEmail,
+  signToken
+} from '../services'
 
 export async function handleRegister (
   request: FastifyRequest<{ Body: { email: string, password: string } }>,
@@ -28,10 +31,10 @@ export async function handleRegister (
   const hashedPassword = await hash(password, saltRounds)
 
   // 4. save user to database
-  await createUser(email, hashedPassword)
+  const { id } = await createUser(email, hashedPassword)
 
   // 5. generate JWT
-  const token = sign({ email }, process.env.JWT_SECRET ?? 'secret')
+  const token = signToken({ email, id })
 
   reply.send({ token })
 }
@@ -63,7 +66,7 @@ export async function handleLogin (
   }
 
   // 4. generate JWT
-  const token = sign({ email }, process.env.JWT_SECRET ?? 'secret')
+  const token = signToken({ email, id: user.id })
 
   reply.send({ token })
 }

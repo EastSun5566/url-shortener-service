@@ -35,13 +35,26 @@ export async function findLinkByShortenKey (shortenKey: string) {
   })
 }
 
-export async function createLink (originalUrl: string, shortenKey: string) {
+export async function createLink ({
+  originalUrl,
+  shortenKey,
+  userId
+}: {
+  originalUrl: string
+  shortenKey: string
+  userId?: number
+}) {
   const db = await getDbClient()
 
   return await db.link.create({
     data: {
       original_url: originalUrl,
-      shorten_key: shortenKey
+      shorten_key: shortenKey,
+      ...(userId && {
+        user: {
+          connect: { id: userId }
+        }
+      })
     }
   })
 }
