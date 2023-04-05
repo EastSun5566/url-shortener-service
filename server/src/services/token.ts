@@ -1,5 +1,4 @@
-import { sign, verify } from 'jsonwebtoken'
-import type { JwtPayload } from 'jsonwebtoken'
+import { sign, verify, type JwtPayload } from 'jsonwebtoken'
 
 interface TokenPayload {
   email: string

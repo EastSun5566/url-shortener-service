@@ -65,5 +65,5 @@ export async function handleCreateLink (
   // 4. add to cache
   await setLinkFromCache(shortenKey, originalUrl)
 
-  reply.status(201).send({ shortenUrl: `${request.hostname}/${shortenKey}` })
+  reply.status(201).send({ shortenUrl: `http://${request.hostname}/${shortenKey}` })
 }
