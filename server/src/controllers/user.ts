@@ -61,7 +61,7 @@ export async function handleLogin (
   // 3. compare password
   const isPasswordCorrect = await compare(password, user.password)
   if (!isPasswordCorrect) {
-    reply.unauthorized()
+    reply.unauthorized('Unauthorized')
     return
   }
 
