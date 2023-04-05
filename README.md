@@ -98,7 +98,8 @@ docker-compose up -d
 # 安裝依賴
 pnpm install
 
-# 遷移資料庫
+# 複製環境變數與遷移資料庫
+cp server/.env.example server/.env
 pnpm server:migrate
 
 # 啟動 server 於 http://127.0.0.1:8080
