@@ -52,7 +52,7 @@
 
 這些後續會再進一步討論
 
-### 首先簡單計算流量與資料量
+### 計算流量與資料量
 
 - 假設建立短網址 QPS 為 `100`，服務運行 `5` 年，約會產生 `100 * 60 * 60 * 24 * 365 * 5 ≈ 15B` 個短網址
 - 每個短網址抓 `500 Bytes`，約會產生 `15B * 500 ≈ 7.5TB` 的資料量
@@ -80,6 +80,14 @@
 erDiagram
     User ||--o{ Link : "has many"
 ```
+
+### API 設計
+
+- Create Link `POST /links`
+- List Links `GET /links`
+- Redirect `GET /links/:shortenKey`
+- Login `POST /login`
+- Register `POST /register`
 
 ## 起步
 
