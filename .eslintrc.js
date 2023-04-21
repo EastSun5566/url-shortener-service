@@ -5,16 +5,17 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:react/recommended',
     'standard-with-typescript',
-    'plugin:react/jsx-runtime'
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended'
   ],
   overrides: [
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['web/tsconfig.json', 'server/tsconfig.json']
+    project: ['web/tsconfig.eslint.json', 'server/tsconfig.json']
   },
   plugins: [
     'react'

@@ -28,7 +28,7 @@ export function RootRoute (): JSX.Element {
   }
   useEffect(() => {
     if (isLogin) fetchLinks()
-  }, [])
+  }, [isLogin])
 
   const handleSubmit = createSubmitHandler(async (values) => {
     const { data } = await createLink(values)
