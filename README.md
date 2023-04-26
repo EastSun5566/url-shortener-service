@@ -59,11 +59,11 @@
 
 ### 核心業務邏輯
 
-短網址系統的運作原理是透過短的 key 去對應到原始網址，例如：`example.com/{key} -> test.com/abc123`，因此，我們可以假設 key 用 base62 編碼（`[A-Za-z0-9]`）約長度為 `6` 碼就可以涵蓋約 `15B` 的短網址數量（`62 ** 6 ≈ 56B`）
+短網址系統的運作原理是透過短的 key 去對應到原始網址，例如：`example.com/{key} -> test.com/abc123`，因此，我們可以假設 key 用 `base62` 編碼（`[A-Za-z0-9]`）約長度為 `6` 碼就可以涵蓋約 `15B` 的短網址數量（`62 ** 6 ≈ 56B`）
 
-最簡單的方式是隨機選擇一個長度為 `6` 的 base62 編碼字串，或是對原始網址進行 hash，然後取前 `6` 碼，最後在寫進 DB 前去做唯一性的檢查，缺點就是每次在寫入前都要去問一次 DB，如果我能確保在在產生 key 時就全域唯一，就可以避免這個問題。
+最簡單的方式是隨機選擇一個長度為 `6` 的 `base62` 編碼字串，或是對原始網址進行 hash，然後取前 `6` 碼，最後在寫進 DB 前去做唯一性的檢查，缺點就是每次在寫入前都要去問一次 DB，如果我能確保在在產生 key 時就全域唯一，就可以避免這個問題。
 
-因為 `UUID` / `Snowflake` 這類產生全域唯一 ID 的演算法因產生字串長度過長所以不考慮，我最後選擇在 [Redis](https://redis.io/) 中建立一個全域 `counter`，每次產生 key 時都會先從 Redis 中取得 `count`，然後用 [INC](https://redis.io/commands/incr) 命令將 `count` +1，再把 `count` 編碼成 base62，這樣就可以確保 key 全域唯一，並且無需在寫入 DB 前再進行唯一性檢查。
+因為 `UUID` / `Snowflake` 這類產生全域唯一 ID 的演算法因產生字串長度過長所以不考慮，我最後選擇在 [Redis](https://redis.io/) 中建立一個全域 `counter`，每次產生 key 時都會先從 `Redis` 中取得 `count`，然後用 [INC](https://redis.io/commands/incr) 命令將 `count` +1，再把 `count` 編碼成 base62，這樣就可以確保 key 全域唯一，並且無需在寫入 DB 前再進行唯一性檢查。
 
 最後，也將 key 與原始網址的對應關係寫入 Redis，這樣下次跳轉時也不用在問一次 DB。
 
@@ -79,6 +79,21 @@
 ```mermaid
 erDiagram
     User ||--o{ Link : "has many"
+    User {
+        int id PK
+        string email UK
+        string password
+        string created_at
+        string updated_at
+    }
+    Link {
+        int id PK
+        string original_url
+        string shorten_key
+        string created_at
+        string updated_at
+        int user_id FK
+    }
 ```
 
 ### API 設計
