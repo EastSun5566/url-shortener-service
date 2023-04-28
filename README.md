@@ -108,7 +108,7 @@ erDiagram
 
 ### 環境需求
 
-- [Node.js](https://nodejs.org/en/)
+- [Node.js](https://nodejs.org/en/) v16+
 - [PNPM](https://pnpm.io/zh-TW/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
